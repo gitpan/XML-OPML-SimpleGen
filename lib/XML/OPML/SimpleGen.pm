@@ -1,40 +1,15 @@
-########################################################################
-#  
-#    XML::OPML::SimpleGen
-#
-#    Copyright 2005, Marcus Thiesen (marcus@thiesen.org)  All rights reserved.
-#
-#    This program is free software; you can redistribute it and/or modify
-#    it under the terms of either:
-#
-#    a) the GNU General Public License as published by the Free Software
-#    Foundation; either version 1, or (at your option) any later
-#       version, or
-#
-#    b) the "Artistic License" which comes with Perl.
-#
-#    On Debian GNU/Linux systems, the complete text of the GNU General
-#    Public License can be found in `/usr/share/common-licenses/GPL' and
-#    the Artistic Licence in `/usr/share/common-licenses/Artistic'.
-#
-#    This program is distributed in the hope that it will be useful,
-#    but WITHOUT ANY WARRANTY; without even the implied warranty of
-#    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  
-#
-########################################################################
-
 package XML::OPML::SimpleGen;
 
 use strict;
 use warnings;
 
 use base 'Class::Accessor';
-use POSIX qw(strftime);
+use POSIX qw(strftime setlocale LC_TIME LC_CTYPE);
 
 __PACKAGE__->mk_accessors(qw|groups xml_options outline group xml_head xml_outlines xml|);
 
-our $VERSION;
-use version; $VERSION = version->new(0.04);
+# Version set by dist.ini; do not change here.
+our $VERSION = '0.05'; # VERSION
 
 sub new {
     my $class = shift;
@@ -76,11 +51,15 @@ sub new {
 
     my $self = bless $args, $class;
 
+    # Force locale to 'C' rather than local, then reset after setting times.
+    # Fixes RT51000.  Thanks to KAPPA for the patch.
+    my $old_loc = POSIX::setlocale(LC_TIME, "C");
     $self->head(
         title => '',
         dateCreated  => strftime( "%a, %e %b %Y %H:%M:%S %z", localtime ),
         dateModified => strftime( "%a, %e %b %Y %H:%M:%S %z", localtime ),
     );
+    POSIX::setlocale(LC_TIME,$old_loc);
 
     return $self;
 }
@@ -150,8 +129,8 @@ sub add_outline {
 sub as_string {
     my $self = shift;
 
-    require XML::Simple;
-    my $xs = new XML::Simple();
+    require  XML::Simple;
+    my $xs = XML::Simple->new();
 
     return $xs->XMLout( $self->_mk_hashref, %{$self->xml_options} );
 }
@@ -172,19 +151,27 @@ sub save {
     my $self = shift;
     my $filename = shift;
 
-    require XML::Simple;
-    my $xs = new XML::Simple();
+    require  XML::Simple;
+    my $xs = XML::Simple->new();
 
     $xs->XMLout( $self->_mk_hashref, %{$self->xml_options}, OutputFile => $filename );
 }
 
 1;
 
+# ABSTRACT:  create OPML using XML::Simple
+
+
+__END__
 =pod
 
 =head1 NAME
 
 XML::OPML::SimpleGen - create OPML using XML::Simple
+
+=head1 VERSION
+
+version 0.05
 
 =head1 SYNOPSIS
 
@@ -214,7 +201,6 @@ XML::OPML::SimpleGen - create OPML using XML::Simple
 
     # See XML::OPML's synopsis for more knowledge
 
-
 =head1 DESCRIPTION
 
 XML::OPML::SimpleGen lets you simply generate OPML documents
@@ -223,6 +209,10 @@ It is a drop-in replacement for XML::OPML
 in regards of generation. 
 As this module uses XML::Simple it is rather
 generous in regards of attribute or element names.
+
+=head1 NAME
+
+XML::OPML::SimpleGen - create OPML using XML::Simple
 
 =head1 COMMON METHODS
 
@@ -288,9 +278,23 @@ grouping outline element.
 
 =back
 
-=head1 AUTHOR
+=head1 MAINTAINER 
 
-Marcus Thiesen, C<< <marcus@thiesen.org> >>
+Stephen Cardie C<< <stephenca@cpan.org> >>
+
+=head1 REPOSITORY
+
+L<https://github.com/stephenca/XML-OPML-SimpleGen>
+
+=head1 CONTRIBUTORS
+
+KAPPA C<< <kappa@cpan.org> >> contributed a patch to close RT51000
+L<https://rt.cpan.org/Public/Bug/Display.html?id=51000>
+
+=head1 REPO
+
+  The git repository for this module is at
+L<https://github.com/stephenca/XML-OPML-SimpleGen>
 
 =head1 BUGS
 
@@ -304,15 +308,16 @@ your bug as I make changes.
 
 L<XML::OPML> L<XML::Simple>
 
-=head1 COPYRIGHT & LICENSE
+=head1 AUTHOR
 
-Copyright 2005-2007 Marcus Thiesen, All Rights Reserved.
+Marcus Theisen <marcus@thiesen.org>
 
-This program is free software; you can redistribute it and/or modify it
-under the same terms as Perl itself.
+=head1 COPYRIGHT AND LICENSE
 
-=head1 CVS
+This software is copyright (c) 2012 by Marcus Thiesen.
 
-$Id: SimpleGen.pm,v 1.9 2008/02/08 10:33:43 stephenca Exp $
+This is free software; you can redistribute it and/or modify it under
+the same terms as the Perl 5 programming language system itself.
 
 =cut
+
