@@ -4,7 +4,7 @@
       "Marcus Theisen <marcus@thiesen.org>"
    ],
    "dynamic_config" : 0,
-   "generated_by" : "Dist::Zilla version 4.300016, CPAN::Meta::Converter version 2.120921",
+   "generated_by" : "Dist::Zilla version 4.300023, CPAN::Meta::Converter version 2.130880",
    "license" : [
       "perl_5"
    ],
@@ -33,6 +33,7 @@
       "runtime" : {
          "requires" : {
             "Class::Accessor" : "0",
+            "DateTime" : "0",
             "POSIX" : "0",
             "XML::Simple" : "0",
             "base" : "0",
@@ -52,16 +53,16 @@
    "provides" : {
       "XML::OPML::SimpleGen" : {
          "file" : "lib/XML/OPML/SimpleGen.pm",
-         "version" : "0.06"
+         "version" : "0.06_01"
       }
    },
-   "release_status" : "stable",
+   "release_status" : "testing",
    "resources" : {
       "bugtracker" : {
          "mailto" : "bug-xml-opml-simplegen at rt.cpan.org",
          "web" : "http://rt.cpan.org/Public/Dist/Display.html?Name=XML-OPML-SimpleGen"
       }
    },
-   "version" : "0.06"
+   "version" : "0.06_01"
 }
 
