@@ -53,16 +53,16 @@
    "provides" : {
       "XML::OPML::SimpleGen" : {
          "file" : "lib/XML/OPML/SimpleGen.pm",
-         "version" : "0.06_01"
+         "version" : "0.07"
       }
    },
-   "release_status" : "testing",
+   "release_status" : "stable",
    "resources" : {
       "bugtracker" : {
          "mailto" : "bug-xml-opml-simplegen at rt.cpan.org",
          "web" : "http://rt.cpan.org/Public/Dist/Display.html?Name=XML-OPML-SimpleGen"
       }
    },
-   "version" : "0.06_01"
+   "version" : "0.07"
 }
 

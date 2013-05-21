@@ -12,7 +12,7 @@ use POSIX qw(setlocale LC_TIME LC_CTYPE);
 __PACKAGE__->mk_accessors(qw|groups xml_options outline group xml_head xml_outlines xml|);
 
 # Version set by dist.ini; do not change here.
-our $VERSION = '0.06_01'; # VERSION
+our $VERSION = '0.07'; # VERSION
 
 sub new {
     my $class = shift;
@@ -189,7 +189,7 @@ XML::OPML::SimpleGen - create OPML using XML::Simple
 
 =head1 VERSION
 
-version 0.06_01
+version 0.07
 
 =head1 SYNOPSIS
 
